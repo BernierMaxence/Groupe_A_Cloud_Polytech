@@ -6,10 +6,3 @@ install:
 script:
 - mvn test
 
-after_success:
-  - eval "$(ssh-agent -s)" #start the ssh agent
-  - chmod 600 .travis/deploy_key.pem # this key should have push access
-  - ssh-add .travis/deploy_key.pem
-  - git remote add deploy git+ssh://git@push-par-clevercloud-customers.services.clever-cloud.com/app_b58bad46-6dd3-49c3-a3c2-26aee5df0565.git
-  - git push deploy
-
