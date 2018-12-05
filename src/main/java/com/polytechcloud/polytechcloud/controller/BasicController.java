@@ -10,7 +10,7 @@ public class BasicController {
 
     @GetMapping(path="/")
     public String get() {
-        return "Hello world";
+        return "Bonjour monde";
     }
 
 
