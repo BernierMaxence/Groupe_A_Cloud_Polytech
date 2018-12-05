@@ -1,7 +1,0 @@
-"build": {
-	"type": "maven",
-	"goal": "build"
-},
-"deploy": {
-	"jarName": "target/polytech-cloud-0.0.1-SNAPSHOT.jar"
-}
