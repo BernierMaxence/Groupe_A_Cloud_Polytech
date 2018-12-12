@@ -7,7 +7,7 @@ script:
 - mvn test
 
 deploy:
- provider:script
+ provider: script
  script: deployCleverCloud.sh
 on:
  branch:master
