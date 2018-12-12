@@ -81,7 +81,7 @@ fabric.properties
 
 # Sonarlint plugin
 .idea/sonarlint
-
+.DS_Store
 
 
 target/*
