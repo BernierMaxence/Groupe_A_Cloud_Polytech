@@ -1,8 +1,10 @@
 package com.polytechcloud.polytechcloud;
 
-import com.polytechcloud.polytechcloud.controller.BasicController;
+import com.polytechcloud.polytechcloud.controller.UserController;
+import com.polytechcloud.polytechcloud.entity.User;
 import com.polytechcloud.polytechcloud.repository.UserRepository;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -11,7 +13,15 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.Optional;
+
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -24,9 +34,9 @@ public class PolytechCloudApplicationTests {
 	@Mock
 	private UserRepository userRepository;
 
-	// Using @InjectMock because userRepository is @Autowired in BasicController and userRepository is @Mock
+	// Using @InjectMock because userRepository is @Autowired in UserController and userRepository is @Mock
 	@InjectMocks
-	private BasicController basicController;
+	private UserController userController;
 
 	@Before
 	public void setup() {
@@ -35,9 +45,32 @@ public class PolytechCloudApplicationTests {
 
 		//standAlone setup initializes MockMvc without loading Spring configuration
 		// --> will mock dependencies withing the controller out using Mockito.
-		mockMvc = MockMvcBuilders.standaloneSetup(basicController).build();
+		mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
 
 	}
+
+	@Test
+	public void testGetUserById_NotFound() throws Exception {
+		when(userRepository.findById("2")).thenReturn(Optional.empty());
+
+		mockMvc.perform(get("/user/{i}", "2").characterEncoding("utf-8"))
+				.andExpect(status().isNotFound());
+//.andDo(MockMvcResultHandlers.print())
+		verify(userRepository).findById("2");
+	}
+
+
+	@Test
+	public void testGetUserById_NoError() throws Exception {
+		when(userRepository.findById("2")).thenReturn(Optional.of(new User()));
+
+		mockMvc.perform(get("/user/{i}", 2).characterEncoding("utf-8"))
+				.andExpect(status().isOk());
+
+		verify(userRepository).findById("2");
+	}
+
+
 
 
 
