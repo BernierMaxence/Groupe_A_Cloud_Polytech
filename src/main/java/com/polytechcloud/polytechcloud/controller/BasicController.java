@@ -13,18 +13,11 @@ import java.time.Instant;
 import java.util.Date;
 
 @RestController
+@RequestMapping(path = "/")
 public class BasicController {
 
-    private final UserRepository userRepository;
-
     @Autowired
-    public BasicController(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    UserRepository userRepository;
 
-    /* @GetMapping(path="/")
-    public String get() {
-        return "Hello world";
-    }*/
 
 }
