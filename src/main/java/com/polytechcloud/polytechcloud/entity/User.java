@@ -2,7 +2,6 @@ package com.polytechcloud.polytechcloud.entity;
 
 import org.springframework.data.annotation.Id;
 
-import javax.annotation.Generated;
 import javax.persistence.GeneratedValue;
 import java.util.Date;
 

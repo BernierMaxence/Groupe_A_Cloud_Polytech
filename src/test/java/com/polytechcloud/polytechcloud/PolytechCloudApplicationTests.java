@@ -1,15 +1,46 @@
 package com.polytechcloud.polytechcloud;
 
+import com.polytechcloud.polytechcloud.controller.BasicController;
+import com.polytechcloud.polytechcloud.repository.UserRepository;
+import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @RunWith(MockitoJUnitRunner.class)
 
 public class PolytechCloudApplicationTests {
+
+	private MockMvc mockMvc;
+
+	@Mock
+	private UserRepository userRepository;
+
+	// Using @InjectMock because userRepository is @Autowired in BasicController and userRepository is @Mock
+	@InjectMocks
+	private BasicController basicController;
+
+	@Before
+	public void setup() {
+		// Init mocked elements
+		MockitoAnnotations.initMocks(this);
+
+		//standAlone setup initializes MockMvc without loading Spring configuration
+		// --> will mock dependencies withing the controller out using Mockito.
+		mockMvc = MockMvcBuilders.standaloneSetup(basicController).build();
+
+	}
+
+
+
 }
 
 	/* private User user1;
