@@ -27,21 +27,6 @@ public class User {
     public User() {
     }
 
-    public User(String id, String firstName, String lastName, Date birthDay, double latitude, double longiude) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthDay = birthDay;
-        this.position = new Position(latitude, longiude);
-    }
-
-    public User(String firstName, String lastName, Date birthDay, double latitude, double longiude) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthDay = birthDay;
-        this.position = new Position(latitude, longiude);
-    }
-
     public String getId() {
         return id;
     }
