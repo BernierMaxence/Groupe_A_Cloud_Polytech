@@ -1,21 +1,25 @@
 package com.polytechcloud.polytechcloud.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
 
-import javax.annotation.Generated;
+
 import javax.persistence.GeneratedValue;
 import java.util.Date;
 
 public class User {
 
     @Id
-    @GeneratedValue
-    long id;
+    @GeneratedValue(generator = "uuid")
+    //@JsonIgnore
+    String id;
 
     String firstName;
 
     String lastName;
 
+    @JsonFormat(pattern = "MM/dd/yyyy")
     Date birthDay;
 
     Position position;
@@ -23,7 +27,7 @@ public class User {
     public User() {
     }
 
-    public User(long id, String firstName, String lastName, Date birthDay, double latitude, double longiude) {
+    public User(String id, String firstName, String lastName, Date birthDay, double latitude, double longiude) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -38,11 +42,11 @@ public class User {
         this.position = new Position(latitude, longiude);
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
