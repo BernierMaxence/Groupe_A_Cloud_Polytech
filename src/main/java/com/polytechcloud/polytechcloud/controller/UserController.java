@@ -43,7 +43,9 @@ public class UserController {
     public ResponseEntity<?> getUserById(@PathVariable String id){
         Optional<User> user = userRepository.findById(id);
 
-        return user.isPresent() ? new ResponseEntity<>(userRepository.findById(id), HttpStatus.OK) : ResponseEntity.ok().build();
+        return user.isPresent() ?
+                new ResponseEntity<>(user, HttpStatus.OK)
+                : ResponseEntity.notFound().build();
     }
 
     @PutMapping(path = "/user")
@@ -73,6 +75,7 @@ public class UserController {
 
     @DeleteMapping(path = "/user/{id}")
     public void deleteUser(@PathVariable int id) {
+
         userRepository.deleteById(id);
 
     }
