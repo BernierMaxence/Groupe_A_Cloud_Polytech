@@ -13,6 +13,7 @@ import java.time.Instant;
 import java.util.Date;
 
 @RestController
+@RequestMapping(path = "/")
 public class BasicController {
 
     private final UserRepository userRepository;
@@ -27,7 +28,7 @@ public class BasicController {
         return "Hello world";
     }*/
 
-    @GetMapping(path="/users")
+    @GetMapping(path="users")
     public Iterable<User> getAllUsers() {
         return userRepository.findAll();
     }
@@ -44,7 +45,7 @@ public class BasicController {
         return userRepository.save(user);
     }
 
-    @PutMapping(path = "/users")
+    @PutMapping(path = "users")
     public User addAllUsers() {
         //Todo : code de retour
         //Todo : "permet de remplacer la collection entière par une nouvelle liste d'utilisateur"
@@ -52,7 +53,7 @@ public class BasicController {
         return userRepository.save(user);
     }
 
-    @PostMapping(path = "/user")
+    @PostMapping(path = "user")
     public ResponseEntity<?> addNewUser(@RequestBody User user) throws URISyntaxException {
         if (user == null)
             return ResponseEntity.noContent().build();
@@ -71,16 +72,15 @@ public class BasicController {
 
 
 
-    @DeleteMapping(path = "/users")
+    @DeleteMapping(path = "users")
     public void deleteAllUsers() {
         //Todo : code de retour
         User user = new User(1, "aaa", "bbb", Date.from(Instant.now()), 100, 100);
         userRepository.deleteAll();
 
-
     }
 
-    @DeleteMapping(path = "/user/{id}")
+    @DeleteMapping(path = "user/{id}")
     public void deleteUser(@PathVariable int id) {
         userRepository.deleteById(id);
 
