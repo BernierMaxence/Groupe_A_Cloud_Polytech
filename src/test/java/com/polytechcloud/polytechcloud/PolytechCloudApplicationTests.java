@@ -1,18 +1,14 @@
 package com.polytechcloud.polytechcloud;
 
-import com.polytechcloud.polytechcloud.entity.User;
-import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.Instant;
-import java.util.Date;
-
-import static org.junit.Assert.assertNotNull;
-
-@RunWith(SpringRunner.class)
 @SpringBootTest
+@AutoConfigureMockMvc
+@RunWith(MockitoJUnitRunner.class)
+
 public class PolytechCloudApplicationTests {
 }
 
