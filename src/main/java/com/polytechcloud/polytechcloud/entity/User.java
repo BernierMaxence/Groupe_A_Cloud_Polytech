@@ -81,4 +81,11 @@ public class User {
     public void setPosition(Position position) {
         this.position = position;
     }
+
+    public void update(User user) {
+        if(user.getFirstName()!=null) {setFirstName(user.getFirstName());}
+        if(user.getLastName()!=null) {setLastName(user.getLastName());}
+        if(user.getBirthDay()!=null) {setBirthDay(user.getBirthDay());}
+        if(user.getPosition()!=null) {setPosition(user.getPosition());}
+    }
 }

@@ -55,6 +55,17 @@ public class UserController {
         return new ResponseEntity<>(users, HttpStatus.CREATED);
     }
 
+    @PutMapping(path = "/user/{id}")
+    public ResponseEntity<?> addAllUsers(@PathVariable String id, @RequestBody User newUser) {
+        Optional<User> user = userRepository.findById(id);
+        if(user.isPresent()) {
+            user.get().update(newUser);
+            userRepository.save(user.get());
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
     @PostMapping(path = "/user")
     public ResponseEntity<?> addNewUser(@RequestBody User user) throws URISyntaxException {
         if (user == null)
@@ -74,10 +85,13 @@ public class UserController {
     }
 
     @DeleteMapping(path = "/user/{id}")
-    public void deleteUser(@PathVariable int id) {
-
-        userRepository.deleteById(id);
-
+    public ResponseEntity<?> deleteUser(@PathVariable String id) {
+        Optional<User> user = userRepository.findById(id);
+        if(user.isPresent()) {
+            userRepository.deleteById(id);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.status(500).build();
     }
 
 }
