@@ -17,8 +17,7 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
-
-
+    
     @GetMapping(path="/user")
     public Iterable<User> getAllUsers() {
         return userRepository.findAll();
@@ -59,7 +58,7 @@ public class UserController {
     }
 
     @DeleteMapping(path = "/user/{id}")
-    public void deleteUser(@PathVariable int id) {
+    public void deleteUser(@PathVariable String id) {
         userRepository.deleteById(id);
 
     }
