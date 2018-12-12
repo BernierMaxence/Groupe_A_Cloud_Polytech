@@ -5,9 +5,11 @@ install:
 - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 script:
 - mvn test
+
+after_success:
 - echo $key | base64 --decode >> key
 - chmod 700 key
-- GIT_SSH_COMMAND='ssh -o "StrictHostKeyChecking no" -i key' git push --force git+ssh://git@push-par-clevercloud-customers.services.clever-cloud.com/app_b58bad46-6dd3-49c3-a3c2-26aee5df0565.git master
+- GIT_SSH_COMMAND='ssh -i key' git push --force git+ssh://git@push-par-clevercloud-customers.services.clever-cloud.com/app_b58bad46-6dd3-49c3-a3c2-26aee5df05$
 - rm key
 
 cache:
@@ -15,3 +17,10 @@ cache:
   - .autoconf
   - $HOME/.m2
 
+addons:
+ ssh_known_hosts:
+ - 163.172.235.1a52 
+ - 163.172.235.153
+ - 163.172.233.43
+ - 163.172.233.44
+ - app-b58bad46-6dd3-49c3-a3c2-26aee5df0565.cleverapps.io
