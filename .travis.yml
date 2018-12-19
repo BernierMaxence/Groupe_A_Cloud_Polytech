@@ -12,13 +12,3 @@ addons:
     organization: "eriwyr-github"
 script: 
 - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectName=polytech-cloud -Dsonar.branch=master
-
-deploy:
- provider: script
- script: sh ./deployCleverCloud.sh
-on:
- branch:master
-
-addons:
- ssh_known_hosts:
- - push-par-clevercloud-customers.services.clever-cloud.com
