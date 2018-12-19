@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.net.URISyntaxException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 public class UserController {
@@ -19,8 +21,14 @@ public class UserController {
     private UserRepository userRepository;
     
     @GetMapping(path="/user")
-    public Iterable<User> getAllUsers() {
-        return userRepository.findAll();
+    public Iterable<User> getAllUsers(@RequestParam(value = "page", required = false) Integer page) {
+        page = page == null ? 0 : page;
+        return userRepository.findAll().stream()
+                //.sorted(Comparator.comparing(User::getId))
+                .skip(100*page)
+                .limit(100)
+                .collect(Collectors.toSet());
+        //return userRepository.findAll();
     }
 
     @GetMapping(path = "user/{id}")
