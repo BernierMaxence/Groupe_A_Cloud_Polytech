@@ -9,7 +9,7 @@ addons:
   sonarcloud:
     organization: "eriwyr-github"
 script: 
-- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectName=polytech-cloud -Dsonar.projectKey=com.polytech-cloud:polytech-cloud:master -Dsonar.branch=master
+- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.branch=master
 
 deploy:
  provider: script
