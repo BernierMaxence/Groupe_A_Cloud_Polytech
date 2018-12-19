@@ -1,5 +1,7 @@
 package com.polytechcloud.polytechcloud;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.util.JSON;
 import com.polytechcloud.polytechcloud.controller.UserController;
 import com.polytechcloud.polytechcloud.entity.User;
 import com.polytechcloud.polytechcloud.repository.UserRepository;
@@ -12,25 +14,28 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @RunWith(MockitoJUnitRunner.class)
-
 public class PolytechCloudApplicationTests {
 
 	private MockMvc mockMvc;
@@ -42,14 +47,24 @@ public class PolytechCloudApplicationTests {
 	@InjectMocks
 	private UserController userController;
 
-	@Before
+    private User user1;
+    private User user2;
+
+    @Before
 	public void setup() {
-		// Init mocked elements
+        user1 = new User();
+        user2 = new User();
+        assertNotNull(user1);
+        assertNotNull(user2);
+
+        // Init mocked elements
 		MockitoAnnotations.initMocks(this);
 
 		//standAlone setup initializes MockMvc without loading Spring configuration
 		// --> will mock dependencies withing the controller out using Mockito.
 		mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
+
+
 
 	}
 
@@ -58,6 +73,7 @@ public class PolytechCloudApplicationTests {
 	public void testGetAllUsers_NoContent() throws Exception {
 
 		when(userRepository.findAll()).thenReturn(new ArrayList<>());
+
 		mockMvc.perform(get("/user").characterEncoding("utf-8"))
 				.andExpect(status().isNoContent());
 
@@ -67,8 +83,8 @@ public class PolytechCloudApplicationTests {
 	@Test
 	public void testGetAllUsers_NoError() throws Exception {
 	    ArrayList<User> users = new ArrayList<>();
-	    users.add(new User());
-        users.add(new User());
+	    users.add(user1);
+        users.add(user2);
 
         when(userRepository.findAll()).thenReturn(users);
         mockMvc.perform(get("/user").characterEncoding("utf-8"))
@@ -101,15 +117,37 @@ public class PolytechCloudApplicationTests {
 
 	/* Tests PUT */
 
-	@Test
-	public void testPutAll() throws Exception {
-		when(userRepository.findById("2")).thenReturn(Optional.of(new User()));
+    @Test
+    public void testPutAll_BadRequest() throws Exception {
 
-		mockMvc.perform(get("/user/{i}", 2).characterEncoding("utf-8"))
-				.andExpect(status().isOk());
+        when(userRepository.saveAll(null)).thenReturn(null);
 
-		verify(userRepository).findById("2");
-	}
+        mockMvc.perform(put("/user")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+
+    }
+
+    @Test
+    public void testPutAll_NoError() throws Exception {
+
+        ObjectMapper mapper = new ObjectMapper();
+
+
+        List<User> users = new ArrayList<>();
+        users.add(user1);
+        users.add(user2);
+
+        when(userRepository.saveAll(users)).thenReturn(users);
+
+
+        mockMvc.perform(put("/user")
+                .content(mapper.writeValueAsString(users))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+        .andExpect(status().isCreated());
+    }
 
 
 
