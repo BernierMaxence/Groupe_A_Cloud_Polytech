@@ -8,8 +8,6 @@ install:
 addons:
   sonarcloud:
     organization: "eriwyr-github"
-    token:
-      secure: "31e482930bb512b3e612488f58f78c016bfed6c8"
 script:
 - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.host.url=https://sonarcloud.io 
 
@@ -44,4 +42,4 @@ cache:
 addons:
  ssh_known_hosts:
  - push-par-clevercloud-customers.services.clever-cloud.com
- 
+
