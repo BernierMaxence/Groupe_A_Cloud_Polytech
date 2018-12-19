@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.mockito.Mockito.verify;
@@ -49,13 +50,32 @@ public class PolytechCloudApplicationTests {
 
 	}
 
+
+	//.andDo(MockMvcResultHandlers.print())
+
+	/* Tests GET */
+	@Test
+	public void testGetAllUsers_NoContent() throws Exception {
+
+		when(userRepository.findAll()).thenReturn(new ArrayList<>());
+		mockMvc.perform(get("/user").characterEncoding("utf-8"))
+				.andExpect(status().isNoContent());
+
+		verify(userRepository).findAll();
+	}
+
+	/*@Test
+	public void testGetAllUsers_NoError() throws Exception {
+		when(userRepository.findAll()).thenReturn()
+	}*/
+
 	@Test
 	public void testGetUserById_NotFound() throws Exception {
 		when(userRepository.findById("2")).thenReturn(Optional.empty());
 
 		mockMvc.perform(get("/user/{i}", "2").characterEncoding("utf-8"))
 				.andExpect(status().isNotFound());
-//.andDo(MockMvcResultHandlers.print())
+
 		verify(userRepository).findById("2");
 	}
 
@@ -72,9 +92,26 @@ public class PolytechCloudApplicationTests {
 
 
 
+	/* Tests PUT */
+
+
+	@Test
+	public void testPutAll() throws Exception {
+		when(userRepository.findById("2")).thenReturn(Optional.of(new User()));
+
+		mockMvc.perform(get("/user/{i}", 2).characterEncoding("utf-8"))
+				.andExpect(status().isOk());
+
+		verify(userRepository).findById("2");
+	}
+
 
 
 }
+
+//MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
+//      .contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson)).andReturn();
+//
 
 	/* private User user1;
 	private User user2;

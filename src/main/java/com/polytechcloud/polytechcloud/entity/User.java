@@ -25,6 +25,7 @@ public class User {
     Position position;
 
     public User() {
+        //Default constructor for Spring
     }
 
     public String getId() {
