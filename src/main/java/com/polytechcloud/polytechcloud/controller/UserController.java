@@ -8,8 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-import java.net.URISyntaxException;
-import java.util.Comparator;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,25 +19,28 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    /* Get Mapping */
+
     @GetMapping(path="/user")
     public Iterable<User> getAllUsers(@RequestParam(value = "page", required = false) Integer page) {
         page = page == null ? 0 : page;
         return userRepository.findAll().stream()
                 //.sorted(Comparator.comparing(User::getId))
-                .skip(100*page)
+                .skip(100 * (long)page)
                 .limit(100)
                 .collect(Collectors.toSet());
-        //return userRepository.findAll();
     }
 
     @GetMapping(path = "user/{id}")
-    public ResponseEntity<?> getUserById(@PathVariable String id){
+    public ResponseEntity<Optional<User>> getUserById(@PathVariable String id){
         Optional<User> user = userRepository.findById(id);
 
         return user.isPresent() ?
                 new ResponseEntity<>(user, HttpStatus.OK)
                 : ResponseEntity.notFound().build();
     }
+
+    /* Put Mapping */
 
     @PutMapping(path = "/user")
     public ResponseEntity<List<User>> addAllUsers(@RequestBody List<User> users) {
@@ -63,8 +65,10 @@ public class UserController {
         return ResponseEntity.notFound().build();
     }
 
+    /* Post Mapping */
+
     @PostMapping(path = "/user")
-    public ResponseEntity<User> addNewUser(@RequestBody User user) throws URISyntaxException {
+    public ResponseEntity<User> addNewUser(@RequestBody User user) {
 
         if (user == null)
             return ResponseEntity.noContent().build();
@@ -74,12 +78,12 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
+    /* Delete Mapping */
+
     @DeleteMapping(path = "/user")
     public void deleteAllUsers() {
         //Todo : code de retour
         userRepository.deleteAll();
-
-
     }
 
     @DeleteMapping(path = "/user/{id}")

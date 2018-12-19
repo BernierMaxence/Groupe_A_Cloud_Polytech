@@ -11,6 +11,7 @@ import java.util.Date;
 public class User {
 
     @Id
+    //TODO
     @GeneratedValue(generator = "uuid")
     //@JsonIgnore
     String id;

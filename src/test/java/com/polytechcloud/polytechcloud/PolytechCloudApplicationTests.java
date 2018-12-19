@@ -19,9 +19,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -50,9 +53,6 @@ public class PolytechCloudApplicationTests {
 
 	}
 
-
-	//.andDo(MockMvcResultHandlers.print())
-
 	/* Tests GET */
 	@Test
 	public void testGetAllUsers_NoContent() throws Exception {
@@ -64,10 +64,17 @@ public class PolytechCloudApplicationTests {
 		verify(userRepository).findAll();
 	}
 
-	/*@Test
+	@Test
 	public void testGetAllUsers_NoError() throws Exception {
-		when(userRepository.findAll()).thenReturn()
-	}*/
+	    ArrayList<User> users = new ArrayList<>();
+	    users.add(new User());
+        users.add(new User());
+
+        when(userRepository.findAll()).thenReturn(users);
+        mockMvc.perform(get("/user").characterEncoding("utf-8"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.*", hasSize(2)));
+	}
 
 	@Test
 	public void testGetUserById_NotFound() throws Exception {
@@ -94,7 +101,6 @@ public class PolytechCloudApplicationTests {
 
 	/* Tests PUT */
 
-
 	@Test
 	public void testPutAll() throws Exception {
 		when(userRepository.findById("2")).thenReturn(Optional.of(new User()));
@@ -108,35 +114,4 @@ public class PolytechCloudApplicationTests {
 
 
 }
-
-//MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
-//      .contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson)).andReturn();
-//
-
-	/* private User user1;
-	private User user2;
-	private User user3;
-
-	@Before
-	public void prepareTests() {
-		user1 = new User(1, "Aaaa", "Bbbb", Date.from(Instant.now()), 12.4, 45.7);
-		user2 = new User(2, "Ccccc", "Ddddd", Date.from(Instant.now()), 46.6, 67.7);
-		user3 = new User("Eeee", "Fffff", Date.from(Instant.now()), 10.9, 23.6);
-
-		assertNotNull(user1);
-		assertNotNull(user2);
-		assertNotNull(user3);
-	} */
-
-
-
-
-	/*@Test
-	public void testDeserialize() throws Exception {
-		String content = "{\"make\":\"Ford\",\"model\":\"Focus\"}";
-		assertThat(this.json.parse(content))
-				.isEqualTo(new VehicleDetails("Ford", "Focus"));
-		assertThat(this.json.parseObject(content).getMake()).isEqualTo("Ford");
-	}*/
-
 
