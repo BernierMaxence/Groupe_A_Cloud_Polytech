@@ -19,7 +19,7 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
-    
+
     @GetMapping(path="/user")
     public Iterable<User> getAllUsers(@RequestParam(value = "page", required = false) Integer page) {
         page = page == null ? 0 : page;
@@ -41,43 +41,49 @@ public class UserController {
     }
 
     @PutMapping(path = "/user")
-    public ResponseEntity<?> addAllUsers(@RequestBody List<User> users) {
+    public ResponseEntity<List<User>> addAllUsers(@RequestBody List<User> users) {
         userRepository.deleteAll();
         userRepository.saveAll(users);
         return new ResponseEntity<>(users, HttpStatus.CREATED);
     }
 
     @PutMapping(path = "/user/{id}")
-    public ResponseEntity<?> addAllUsers(@PathVariable String id, @RequestBody User newUser) {
+    public ResponseEntity<Optional<User>> addAllUsers(@PathVariable String id, @RequestBody User newUser) {
+
         Optional<User> user = userRepository.findById(id);
+
         if(user.isPresent()) {
+
             user.get().update(newUser);
             userRepository.save(user.get());
             return new ResponseEntity<>(user, HttpStatus.OK);
+
         }
+
         return ResponseEntity.notFound().build();
     }
 
     @PostMapping(path = "/user")
-    public ResponseEntity<?> addNewUser(@RequestBody User user) throws URISyntaxException {
+    public ResponseEntity<User> addNewUser(@RequestBody User user) throws URISyntaxException {
+
         if (user == null)
             return ResponseEntity.noContent().build();
 
         userRepository.save(user);
+
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
     @DeleteMapping(path = "/user")
     public void deleteAllUsers() {
         //Todo : code de retour
-        //User user = new User(1, "aaa", "bbb", Date.from(Instant.now()), 100, 100);
         userRepository.deleteAll();
 
 
     }
 
     @DeleteMapping(path = "/user/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable String id) {
+    public ResponseEntity<Optional<User>> deleteUser(@PathVariable String id) {
         Optional<User> user = userRepository.findById(id);
         if(user.isPresent()) {
             userRepository.deleteById(id);
