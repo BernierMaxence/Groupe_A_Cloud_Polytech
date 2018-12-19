@@ -42,4 +42,3 @@ cache:
 addons:
  ssh_known_hosts:
  - push-par-clevercloud-customers.services.clever-cloud.com
-
