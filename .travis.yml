@@ -19,8 +19,7 @@ addons:
       secure: "PDdDoLTIH6KL+5DMGl3uiMm/ufWVLcH15NyuisZnmu3Xf25P5LOuPLpd2PxKAHlxKOtnAhzpenbJix91W5XTXqHQaTs1Cf6zpqvTnVAd7VLisv/gJnUSt9DK+jF+68uG16hLacv47qG7tNwg8O6V2EyWw9vEVjvN5fiIbJKzF6Xdt+aAplBu8VeWsOJVyuDQB1uJ4gqodoAyJFj10e73RGDXaNgy0ta0B8gqzd3mYtZyAZQdUbHUahAAhY/T1CfC39BG9gDFI+PDYkilJAQX7XJawTxvms/8peMobXv4LjUgFmkr8QG+geWKG9I7CgZ2cCDWfbPJeXSwd750b9Qbh2wk+2bn+HEvlQHqW3tegQ1QUYmEnUFRZsS4dyNFDOoQHSTDy1RpwBAjIceIsiDJoHbPe4+zMKL8SJu/YbyewDH31MjmfVV37HBantTFgpnZJ6HPa8mXM/KASO1fVnI9R5zYtgaLvZHDZ8C/LPTDhJy8mWoblCbz0WhqyfTBaZcA8KmW48wr5l6uJKcPNHJ4OshQw3Q3jc9Aui5vVxeMXAJX6v4PUKzMOqJdTFlSOKYOutvmm7e77BJzEw8GHZenUr3KouKWl9D6Q7fZ9qoccl3lKKlsc/qERhl0FL4WhdqP1KbA4FFKLiNlAqyfEDI1RAizhqyFUxcXbPM8HDp2bgg=" # encrypted value of your token
 script:
   # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
-  - mvn clean install
-  - mvn sonar:sonar -Dsonar.host.url=https://sonarcloud.io
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar  -Dsonar.host.url=https://sonarcloud.io
 
 notifications:
   email:
