@@ -11,6 +11,7 @@ import java.util.Date;
 public class User {
 
     @Id
+    //TODO
     @GeneratedValue(generator = "uuid")
     //@JsonIgnore
     String id;
@@ -25,6 +26,7 @@ public class User {
     Position position;
 
     public User() {
+        //Default constructor for Spring
     }
 
     public String getId() {
