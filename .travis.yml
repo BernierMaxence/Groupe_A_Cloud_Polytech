@@ -8,7 +8,6 @@ install:
 addons:
   sonarcloud:
     organization: "berniermaxence-github"
-    token:
-      secure: b7dd8598941ea856129f8aa543ec2e19d4b9f596 # encrypted value of your token
+
 script:
-- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.host.url=https://sonarcloud.io
+- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.login=b7dd8598941ea856129f8aa543ec2e19d4b9f596 -Dsonar.host.url=https://sonarcloud.io
