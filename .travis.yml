@@ -10,4 +10,4 @@ addons:
     organization: "berniermaxence-github"
 
 script:
-- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.login=b7dd8598941ea856129f8aa543ec2e19d4b9f596 -Dsonar.host.url=https://sonarcloud.io
+- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=BernierMaxence_Groupe_A_Cloud_Polytech -Dsonar.organization=berniermaxence-github -Dsonar.host.url=https://sonarcloud.io
