@@ -11,3 +11,34 @@ addons:
 
 script:
 - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=BernierMaxence_Groupe_A_Cloud_Polytech -Dsonar.organization=berniermaxence-github -Dsonar.host.url=https://sonarcloud.io
+
+deploy:
+ provider: script
+ script: sh ./deployCleverCloud.sh
+on:
+ branch:master
+
+notifications:
+  email:
+    recipients:
+      - chabrier.valentin@gmail.com
+      - maxencebernier@hotmail.fr
+      - clasenkristoffer@gmail.com
+  slack:
+    rooms:
+      - secure : GP2MVaJYuDZNZm+xQVYMWstzIGrgSni0oL1cRmRqf8icFCyHITLg2DK78GijO1ZAGHkzsvwPyisz33f+6eJ9PLG0dYFGbtfRLDHMT6Y6lMgosh9lpcCDwZGtf77Txo/mQZTBiTe7VsM2hAjvZSueCXghg97KIOypTq7JFWxznh4rCv5imKqRd34ixFM/gJzMVDiR2I+Zbw4uknwR+dWWkjSYwDQFe6eU05roCX2LZe1HQaaWQ6FHqgpaHuCBAwszZMD1XOq4s3z7wNhnluHNdXeSg4Zmua3bQD+CiN5421elZ1XdzGB2YBxb0szb/gHpwI+r1amOIn0781LNNbpctxRW1ZziAmcrS7aIhXUbwrswcLz3htvZHTNQBrix0m9OQni9rmrP6FFeMvCnq/Wm3YEBpO4e++cYMrymI7SLFTDBNtiVouunR5SZP+HxFxIqO2DbWehNyUZAOjnLxcsV8Dj97EWAj7Rf1QJ9sp7Iiz8FEFyZ2DPmP8tKM9AqcdufZgWXeVCG0C6jlWkqrJF29G6ZVkO5DniNm7y5R7pVSCb2STGFcRj3upYFz35XBzuZBGLG1K063zbNuT7VBfYqGp4lYb4nhlkVD0/inBQp6eMFXrZP5eJ1MjZNgsORM/4b0LiOfyUErTO4dyjMWrwrumUaWCqASCp4OQt2j7PYsWA=
+    on_success: always
+    on_failure: always
+    template : 
+      - "Repo `%{repository_slug}` *%{result}* build (<%{build_url}|#%{build_number}>) for commit (<%{compare_url}|%{commit}>) on branch `%{branch}`."
+      - "Execution time: *%{duration}*"
+      - "Message: %{message}"
+
+cache:
+  directories:
+  - .autoconf
+  - $HOME/.m2
+
+addons:
+ ssh_known_hosts:
+ - push-par-clevercloud-customers.services.clever-cloud.com
