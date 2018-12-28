@@ -22,10 +22,10 @@ public class BasicController {
         this.userRepository = userRepository;
     }
 
-    /* @GetMapping(path="/")
+    @GetMapping(path="")
     public String get() {
         return "Hello world";
-    }*/
+    }
 
     @GetMapping(path="/users")
     public Iterable<User> getAllUsers() {
