@@ -35,11 +35,6 @@ notifications:
       - "Execution time: *%{duration}*"
       - "Message: %{message}"
 
-cache:
-  directories:
-  - .autoconf
-  - $HOME/.m2
-
 addons:
  ssh_known_hosts:
  - push-par-clevercloud-customers.services.clever-cloud.com
