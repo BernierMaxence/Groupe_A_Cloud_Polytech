@@ -57,7 +57,12 @@
 			<version>1.0.2</version>
 		</dependency>
 
-
+		<!-- Actuator -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+			<version>RELEASE</version>
+		</dependency>
 	</dependencies>
 
 	<distributionManagement>
