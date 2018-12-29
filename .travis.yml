@@ -14,7 +14,6 @@ script:
 - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install -DskipTests=true sonar:sonar -Dsonar.projectKey=BernierMaxence_Groupe_A_Cloud_Polytech -Dsonar.organization=berniermaxence-github -Dsonar.host.url=https://sonarcloud.io
 
 deploy:
- skip_cleanup: true
  provider: script
  script: sh ./deployCleverCloud.sh
 
