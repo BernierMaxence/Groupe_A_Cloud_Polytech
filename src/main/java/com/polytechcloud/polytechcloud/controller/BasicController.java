@@ -24,7 +24,7 @@ public class BasicController {
 
     @GetMapping(path="")
     public String get() {
-        return "Bonjour Monde";
+        return "Bhdghdfg";
     }
 
     @GetMapping(path="/users")
