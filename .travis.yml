@@ -16,6 +16,8 @@ script:
 deploy:
  provider: script
  script: sh ./deployCleverCloud.sh
+on:
+ branch: master
 
 notifications:
   email:
