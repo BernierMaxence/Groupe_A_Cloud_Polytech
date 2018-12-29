@@ -17,8 +17,6 @@ deploy:
  skip_cleanup: true
  provider: script
  script: sh ./deployCleverCloud.sh
-on:
- branch: master
 
 notifications:
   email:
