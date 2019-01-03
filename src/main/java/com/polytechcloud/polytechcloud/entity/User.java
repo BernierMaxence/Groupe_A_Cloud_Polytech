@@ -75,4 +75,6 @@ public class User {
         if(user.getBirthDay()!=null) {setBirthDay(user.getBirthDay());}
         if(user.getPosition()!=null) {setPosition(user.getPosition());}
     }
+
+
 }

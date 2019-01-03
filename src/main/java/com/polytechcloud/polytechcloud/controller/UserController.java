@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -51,25 +50,34 @@ public class UserController {
 
     @PutMapping(path = "/user")
     public ResponseEntity<List<User>> addAllUsers(@RequestBody List<User> users) {
-        userRepository.deleteAll();
-        userRepository.saveAll(users);
-        return new ResponseEntity<>(users, HttpStatus.CREATED);
+        if (users.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        } else {
+            userRepository.deleteAll();
+            userRepository.saveAll(users);
+            return new ResponseEntity<>(users, HttpStatus.CREATED);
+        }
     }
 
     @PutMapping(path = "/user/{id}")
-    public ResponseEntity<Optional<User>> addAllUsers(@PathVariable String id, @RequestBody User newUser) {
+    public ResponseEntity<Optional<User>> addOneUser(@PathVariable String id, @RequestBody User newUser) {
+        if(newUser== null) {
+            return ResponseEntity.badRequest().build();
+        } else {
 
-        Optional<User> user = userRepository.findById(id);
 
-        if(user.isPresent()) {
+            Optional<User> user = userRepository.findById(id);
 
-            user.get().update(newUser);
-            userRepository.save(user.get());
-            return new ResponseEntity<>(user, HttpStatus.OK);
+            if (user.isPresent()) {
 
+                user.get().update(newUser);
+                userRepository.save(user.get());
+                return new ResponseEntity<>(user, HttpStatus.OK);
+
+            }
+
+            return ResponseEntity.notFound().build();
         }
-
-        return ResponseEntity.notFound().build();
     }
 
     /* Post Mapping */
@@ -78,7 +86,7 @@ public class UserController {
     public ResponseEntity<User> addNewUser(@RequestBody User user) {
 
         if (user == null)
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.badRequest().build();
 
         userRepository.save(user);
 
@@ -88,9 +96,9 @@ public class UserController {
     /* Delete Mapping */
 
     @DeleteMapping(path = "/user")
-    public void deleteAllUsers() {
-        //Todo : code de retour
+    public ResponseEntity deleteAllUsers() {
         userRepository.deleteAll();
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping(path = "/user/{id}")
@@ -100,7 +108,7 @@ public class UserController {
             userRepository.deleteById(id);
             return ResponseEntity.ok().build();
         }
-        return ResponseEntity.status(500).build();
+        return ResponseEntity.notFound().build();
     }
 
 }
