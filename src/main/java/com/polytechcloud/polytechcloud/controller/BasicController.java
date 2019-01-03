@@ -24,7 +24,7 @@ public class BasicController {
     }
 
     @GetMapping(path="")
-    @Timed(value = "default.path.timer", histogram = true, percentiles = { 0.95, 0.99 }, extraTags = { "version","v1" })
+    @Timed(value = "default.path.timer")
     public String get() {
         return "Bhdghdfg";
     }
