@@ -9,9 +9,8 @@ public class CustomMetricsConfig {
 
     @Bean
     MeterRegistryCustomizer<MeterRegistry> metricsCommonTags() {
-        return registry -> {
+        return registry ->
             registry.config().commonTags("application", "metrics_service");
-        };
     }
 
 }
