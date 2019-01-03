@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -22,13 +23,19 @@ public class UserController {
     /* Get Mapping */
 
     @GetMapping(path="/user")
-    public Iterable<User> getAllUsers(@RequestParam(value = "page", required = false) Integer page) {
-        page = page == null ? 0 : page;
-        return userRepository.findAll().stream()
-                //.sorted(Comparator.comparing(User::getId))
-                .skip(100 * (long)page)
-                .limit(100)
-                .collect(Collectors.toSet());
+    public ResponseEntity<List<User>> getAllUsers(@RequestParam(value = "page", required = false) Integer page) {
+        List<User> users =  userRepository.findAll();
+        if (users.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        } else {
+            page = page == null ? 0 : page;
+            List<User> newSet = users.stream()
+                    //.sorted(Comparator.comparing(User::getId))
+                    .skip(100 * (long)page)
+                    .limit(100)
+                    .collect(Collectors.toList());
+            return new ResponseEntity(newSet, HttpStatus.OK);
+        }
     }
 
     @GetMapping(path = "user/{id}")
