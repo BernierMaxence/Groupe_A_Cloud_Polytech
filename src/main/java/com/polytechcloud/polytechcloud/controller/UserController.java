@@ -3,6 +3,7 @@ package com.polytechcloud.polytechcloud.controller;
 import com.polytechcloud.polytechcloud.entity.User;
 import com.polytechcloud.polytechcloud.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,18 +24,16 @@ public class UserController {
 
     @GetMapping(path="/user")
     public ResponseEntity<List<User>> getAllUsers(@RequestParam(value = "page", required = false) Integer page) {
-        List<User> users =  userRepository.findAll();
-        if (users.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        } else {
-            page = page == null ? 0 : page;
-            List<User> newSet = users.stream()
-                    //.sorted(Comparator.comparing(User::getId))
-                    .skip(100 * (long)page)
-                    .limit(100)
-                    .collect(Collectors.toList());
-            return new ResponseEntity(newSet, HttpStatus.OK);
-        }
+        page = page == null ? 0 : page;
+        List<User> users = userRepository.findAll(new Sort(Sort.Direction.ASC, "id"))
+                .stream()
+                .skip(100*page)
+                .limit(100)
+                .collect(Collectors.toList());
+
+        return users.isEmpty()
+                ? ResponseEntity.noContent().build()
+                : new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @GetMapping(path = "user/{id}")

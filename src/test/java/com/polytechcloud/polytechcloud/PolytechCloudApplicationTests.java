@@ -17,8 +17,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.data.domain.Sort;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -63,11 +65,13 @@ public class PolytechCloudApplicationTests {
 	@Test
 	public void testGetAllUsers_NoContent() throws Exception {
 
-		when(userRepository.findAll()).thenReturn(new ArrayList<>());
-		mockMvc.perform(get("/user").characterEncoding("utf-8"))
+		when(userRepository.findAll(new Sort(Sort.Direction.ASC, "id")))
+                .thenReturn(new ArrayList<>());
+
+        mockMvc.perform(get("/user").characterEncoding("utf-8"))
 				.andExpect(status().isNoContent());
 
-		verify(userRepository).findAll();
+		verify(userRepository).findAll(new Sort(Sort.Direction.ASC, "id"));
 	}
 
 	@Test
