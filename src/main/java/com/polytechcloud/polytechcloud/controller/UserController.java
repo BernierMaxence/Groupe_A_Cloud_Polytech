@@ -31,6 +31,8 @@ public class UserController {
                 .limit(100)
                 .collect(Collectors.toList());
 
+
+        System.out.println("is empty : "+users.isEmpty());
         return users.isEmpty()
                 ? ResponseEntity.noContent().build()
                 : new ResponseEntity<>(users, HttpStatus.OK);
