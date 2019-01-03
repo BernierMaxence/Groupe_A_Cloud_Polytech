@@ -1,30 +1,30 @@
 package com.polytechcloud.polytechcloud.entity;
 
 public class Position {
-    private double latitude;
-    private double longitude;
+    private double lat;
+    private double lon;
 
     public Position() {
     }
 
-    public Position(double latitude, double longitude) {
-        this.latitude = latitude;
-        this.longitude = longitude;
+    public Position(double lat, double lon) {
+        this.lat = lat;
+        this.lon = lon;
     }
 
-    public double getLatitude() {
-        return latitude;
+    public double getLat() {
+        return lat;
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
+    public void setLat(double lat) {
+        this.lat = lat;
     }
 
-    public double getLongitude() {
-        return longitude;
+    public double getLon() {
+        return lon;
     }
 
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
+    public void setLon(double lon) {
+        this.lon = lon;
     }
 }

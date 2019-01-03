@@ -1,48 +1,39 @@
 package com.polytechcloud.polytechcloud.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
 
-import javax.annotation.Generated;
+
 import javax.persistence.GeneratedValue;
 import java.util.Date;
 
 public class User {
 
     @Id
-    @GeneratedValue
-    long id;
+    //TODO
+    @GeneratedValue(generator = "uuid")
+    //@JsonIgnore
+    String id;
 
     String firstName;
 
     String lastName;
 
+    @JsonFormat(pattern = "MM/dd/yyyy")
     Date birthDay;
 
     Position position;
 
     public User() {
+        //Default constructor for Spring
     }
 
-    public User(long id, String firstName, String lastName, Date birthDay, double latitude, double longiude) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthDay = birthDay;
-        this.position = new Position(latitude, longiude);
-    }
-
-    public User(String firstName, String lastName, Date birthDay, double latitude, double longiude) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthDay = birthDay;
-        this.position = new Position(latitude, longiude);
-    }
-
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -77,4 +68,13 @@ public class User {
     public void setPosition(Position position) {
         this.position = position;
     }
+
+    public void update(User user) {
+        if(user.getFirstName()!=null) {setFirstName(user.getFirstName());}
+        if(user.getLastName()!=null) {setLastName(user.getLastName());}
+        if(user.getBirthDay()!=null) {setBirthDay(user.getBirthDay());}
+        if(user.getPosition()!=null) {setPosition(user.getPosition());}
+    }
+
+
 }
