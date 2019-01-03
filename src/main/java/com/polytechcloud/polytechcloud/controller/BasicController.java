@@ -2,6 +2,7 @@ package com.polytechcloud.polytechcloud.controller;
 
 import com.polytechcloud.polytechcloud.entity.User;
 import com.polytechcloud.polytechcloud.repository.UserRepository;
+import io.micrometer.core.annotation.Timed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,6 @@ public class BasicController {
     public String get() {
         return "Bhdghdfg";
     }
-
     @GetMapping(path="/users")
     public Iterable<User> getAllUsers() {
         return userRepository.findAll();
