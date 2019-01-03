@@ -20,7 +20,6 @@ public class UserController {
     private UserRepository userRepository;
 
     /* Get Mapping */
-
     @GetMapping(path="/user")
     public ResponseEntity<List<User>> getAllUsers(@RequestParam(value = "page", required = false) Integer page) {
         List<User> users =  userRepository.findAll();
