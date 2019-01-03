@@ -14,7 +14,6 @@ import java.time.Instant;
 import java.util.Date;
 
 @RestController
-@Timed("basicControler")
 public class BasicController {
 
     private final UserRepository userRepository;
