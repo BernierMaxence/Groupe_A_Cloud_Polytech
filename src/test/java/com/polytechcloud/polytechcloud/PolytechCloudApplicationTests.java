@@ -10,36 +10,40 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.data.domain.Sort;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @RunWith(MockitoJUnitRunner.class)
-
+@WebAppConfiguration
 public class PolytechCloudApplicationTests {
 
 	private MockMvc mockMvc;
+
+	//@Autowired
+	//WebApplicationContext wac;
 
 	@Mock
 	private UserRepository userRepository;
@@ -50,12 +54,13 @@ public class PolytechCloudApplicationTests {
 
 	@Before
 	public void setup() {
-		// Init mocked elements
+        // Init mocked elements
 		MockitoAnnotations.initMocks(this);
 
 		//standAlone setup initializes MockMvc without loading Spring configuration
 		// --> will mock dependencies withing the controller out using Mockito.
 		mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
+        //mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 
 	}
 
@@ -65,7 +70,8 @@ public class PolytechCloudApplicationTests {
 	@Test
 	public void testGetAllUsers_NoContent() throws Exception {
 
-		when(userRepository.findAll(new Sort(Sort.Direction.ASC, "id")))
+
+        when(userRepository.findAll(new Sort(Sort.Direction.ASC, "id")))
                 .thenReturn(new ArrayList<>());
 
         mockMvc.perform(get("/user").characterEncoding("utf-8"))
