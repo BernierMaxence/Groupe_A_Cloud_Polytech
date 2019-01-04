@@ -10,49 +10,12 @@
     <name>polytech-cloud</name>
     <description>Project Polytech Coud</description>
 
-    <profiles>
-        <profile>
-            <id>sonar</id>
-            <properties>
-                <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-                <sonar.organization>berniermaxence-github</sonar.organization>
-
-                <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
-                <sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
-
-
-                <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
-                <sonar.language>java</sonar.language>
-
-
-              </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                    <groupId>org.jacoco</groupId>
-                    <artifactId>jacoco-maven-plugin</artifactId>
-                    </plugin>
-
-                    <plugin>
-                    <groupId>org.sonarsource.scanner.maven</groupId>
-                    <artifactId>sonar-maven-plugin</artifactId>
-                    </plugin>
-                </plugins>
-            </build>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-        </profile>
-    </profiles>
-
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.1.1.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-
-
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -99,13 +62,12 @@
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-actuator-autoconfigure</artifactId>
             <version>2.1.1.RELEASE</version>
         </dependency>
-
-
     </dependencies>
 
     <distributionManagement>
@@ -115,29 +77,39 @@
         </repository>
     </distributionManagement>
 
+    <profiles>
+        <profile>
+            <id>sonar</id>
+            <properties>
+                <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+                <sonar.organization>berniermaxence-github</sonar.organization>
+
+                <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+                <sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+
+                <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
+                <!-- <sonar.language>java</sonar.language>-->
+            </properties>
+
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+    </profiles>
+
     <build>
+
         <plugins>
+
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
-            <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>3.3.0.603</version>
-                <executions>
-                    <execution>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sonar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
 
         </plugins>
+
+
         <extensions>
             <!-- Enabling the use of SSH -->
             <extension>
@@ -148,8 +120,9 @@
         </extensions>
 
         <pluginManagement>
+
             <plugins>
-                <plugin>
+               <plugin>
                     <groupId>org.sonarsource.scanner.maven</groupId>
                     <artifactId>sonar-maven-plugin</artifactId>
                     <version>3.5.0.1254</version>
@@ -167,22 +140,27 @@
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
                     <version>0.8.2</version>
+
                     <configuration>
                         <append>true</append>
                     </configuration>
+
                     <executions>
+
                         <execution>
                             <id>prepare-agent</id>
                             <goals>
                                 <goal>prepare-agent</goal>
                             </goals>
                         </execution>
+
                         <execution>
                             <id>prepare-agent-integration</id>
                             <goals>
                                 <goal>prepare-agent-integration</goal>
                             </goals>
                         </execution>
+
                         <execution>
                             <id>jacoco-site</id>
                             <phase>verify</phase>
@@ -190,12 +168,13 @@
                                 <goal>report</goal>
                             </goals>
                         </execution>
+
                     </executions>
                 </plugin>
+
             </plugins>
         </pluginManagement>
+
     </build>
-
-
 
 </project>
