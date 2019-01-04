@@ -185,7 +185,6 @@
                     <version>3.5.0.1254</version>
                     <executions>
                         <execution>
-                            <phase>verify</phase>
                             <goals>
                                 <goal>sonar</goal>
                             </goals>
