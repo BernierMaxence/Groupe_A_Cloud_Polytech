@@ -3,7 +3,8 @@ jdk: oraclejdk8
 dist: trusty
 
 install:
-- mvn clean install #-DskipTests=true -Dmaven.javadoc.skip=true -Dsonar.projectKey=BernierMaxence_Groupe_A_Cloud_Polytech -B -V
+- mvn clean install -DskipTests=true #-Dmaven.javadoc.skip=true -Dsonar.projectKey=BernierMaxence_Groupe_A_Cloud_Polytech -B -V
+#- mvn test
 
 addons:
   sonarcloud:
