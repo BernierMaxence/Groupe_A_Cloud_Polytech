@@ -2,20 +2,16 @@ language: java
 jdk: oraclejdk8
 dist: trusty
 
-before_install:
-  - chmod +x mvnw
-
-
 install:
-- mvn clean -DskipTests=true -DskipTest=true  -e -X
-- mvn org.jacoco:jacoco-maven-plugin:prepare-agent -DskipTests=true -DskipTest=true -e -X
-- mvn install -DskipTests=true -DskipTest=true -e -X
-- mvn test -e -X
-- mvn sonar:sonar -Dsonar.projectKey=BernierMaxence_Groupe_A_Cloud_Polytech -Dsonar.organization=berniermaxence-github -Dsonar.host.url=https://sonarcloud.io -DskipTests=true -DskipTest=true  -e -X
+- mvn install -DskipTests=true -Dmaven.javadoc.skip=true -Dsonar.projectKey=BernierMaxence_Groupe_A_Cloud_Polytech -B -V
 
 addons:
   sonarcloud:
     organization: "berniermaxence-github"
+
+script:
+- mvn test
+- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install -Dsonar.projectKey=BernierMaxence_Groupe_A_Cloud_Polytech -Dsonar.organization=berniermaxence-github -Dsonar.host.url=https://sonarcloud.io
 
 
 deploy:
