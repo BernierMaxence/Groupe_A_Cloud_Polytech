@@ -12,6 +12,7 @@ addons:
 
 script:
 -mvn sonar:sonar -Dsonar.projectKey=BernierMaxence_Groupe_A_Cloud_Polytech -Dsonar.organization=berniermaxence-github -Dsonar.host.url=https://sonarcloud.io
+
 #- mvn test
 #- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install -Dsonar.projectKey=BernierMaxence_Groupe_A_Cloud_Polytech -Dsonar.organization=berniermaxence-github -Dsonar.host.url=https://sonarcloud.io
 
