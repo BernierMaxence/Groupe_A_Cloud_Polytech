@@ -2,6 +2,10 @@ language: java
 jdk: oraclejdk8
 dist: trusty
 
+before_install:
+  - chmod +x mvnw
+
+
 install:
 - mvn clean -DskipTests=true -DskipTest=true  -e -X
 - mvn org.jacoco:jacoco-maven-plugin:prepare-agent -DskipTests=true -DskipTest=true -e -X
