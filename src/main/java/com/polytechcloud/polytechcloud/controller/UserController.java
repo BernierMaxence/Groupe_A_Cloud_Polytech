@@ -27,10 +27,12 @@ public class UserController {
         page = page == null ? 0 : page;
         List<User> users = userRepository.findAll(new Sort(Sort.Direction.ASC, "id"))
                 .stream()
-                .skip(100*(long)page)
+                .skip(100*page)
                 .limit(100)
                 .collect(Collectors.toList());
 
+
+        System.out.println("is empty : "+users.isEmpty());
         return users.isEmpty()
                 ? ResponseEntity.noContent().build()
                 : new ResponseEntity<>(users, HttpStatus.OK);
