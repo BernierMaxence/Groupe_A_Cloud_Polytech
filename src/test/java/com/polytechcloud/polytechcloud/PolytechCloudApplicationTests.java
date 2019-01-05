@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.polytechcloud.polytechcloud.controller.UserController;
 import com.polytechcloud.polytechcloud.entity.User;
 import com.polytechcloud.polytechcloud.repository.UserRepository;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,8 +32,7 @@ import org.springframework.data.domain.Sort;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -108,6 +109,65 @@ public class PolytechCloudApplicationTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.*", hasSize(100)));
         verify(userRepository).findAll(new Sort(Sort.Direction.ASC, "id"));
+    }
+
+    // ---------- GET /user?page= -> deux demandes pour le même page doivent retourner les mêmes utilisateurs ----------
+
+    @Test
+    public void testGetAllUsers_NoError_samePageForTwoRequests() throws Exception {
+        ArrayList<User> users = new ArrayList<>();
+        for (int i = 0; i<200; i++) {
+            User user = new User();
+            user.setId(Integer.toString(i));
+            users.add(user);
+        }
+
+        when(userRepository.findAll(new Sort(Sort.Direction.ASC, "id"))).thenReturn(users);
+
+        MvcResult page0 = mockMvc.perform(get("/user?page=0").characterEncoding("utf-8")).andReturn();
+        MvcResult page0SecondTime = mockMvc.perform(get("/user?page=0").characterEncoding("utf-8")).andReturn();
+
+        JSONArray page0Users = new JSONArray(page0.getResponse().getContentAsString());
+        JSONArray page0SecondTimeUsers = new JSONArray(page0SecondTime.getResponse().getContentAsString());
+        for(int i=0; i<page0Users.length(); i++)
+        {
+            JSONObject page0User = page0Users.getJSONObject(i);
+            JSONObject page0SecondTimeUser = page0SecondTimeUsers.getJSONObject(i);
+            assertEquals(page0User.getString("id"), page0SecondTimeUser.getString("id"));
+        }
+
+        verify(userRepository, Mockito.times(2)).findAll(new Sort(Sort.Direction.ASC, "id"));
+    }
+
+    // ---------- GET /user?page= -> deux pages différentes ne peuvent pas contenir le même utilisateur ----------
+
+    @Test
+    public void testGetAllUsers_NoError_differentPage1AndPage2() throws Exception {
+        ArrayList<User> users = new ArrayList<>();
+        for (int i = 0; i<200; i++) {
+            User user = new User();
+            user.setId(Integer.toString(i));
+            users.add(user);
+        }
+
+        when(userRepository.findAll(new Sort(Sort.Direction.ASC, "id"))).thenReturn(users);
+
+        MvcResult page0 = mockMvc.perform(get("/user?page=0").characterEncoding("utf-8")).andReturn();
+        MvcResult page1 = mockMvc.perform(get("/user?page=1").characterEncoding("utf-8")).andReturn();
+
+        JSONArray page0Users = new JSONArray(page0.getResponse().getContentAsString());
+        JSONArray page1Users = new JSONArray(page1.getResponse().getContentAsString());
+        for(int i=0; i<page0Users.length(); i++)
+        {
+            JSONObject page0User = page0Users.getJSONObject(i);
+            for(int j=0; j<page1Users.length(); j++)
+            {
+                JSONObject page1User = page1Users.getJSONObject(j);
+                assertNotEquals(page0User.getString("id"), page1User.getString("id"));
+            }
+        }
+
+        verify(userRepository, Mockito.times(2)).findAll(new Sort(Sort.Direction.ASC, "id"));
     }
 
     // ----------------------------------------------------------------------------
