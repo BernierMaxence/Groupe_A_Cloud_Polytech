@@ -45,9 +45,10 @@ public class UserController {
 
         List<User> users = userStream.collect(Collectors.toList());
 
-        return users.isEmpty()
+        return new ResponseEntity<>(users, HttpStatus.OK);
+        /*return users.isEmpty()
                 ? ResponseEntity.noContent().build()
-                : new ResponseEntity<>(users, HttpStatus.OK);
+                : new ResponseEntity<>(users, HttpStatus.OK);*/
     }
 
     @GetMapping(path = "user/{id}")
@@ -121,7 +122,7 @@ public class UserController {
             userRepository.deleteById(id);
             return ResponseEntity.ok().build();
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.status(500).build();
     }
 
 }
