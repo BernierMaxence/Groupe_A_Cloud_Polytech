@@ -14,14 +14,14 @@ public class User {
     @GeneratedValue(generator = "uuid")
     String id;
 
-    String firstName;
+    private String firstName;
 
-    String lastName;
+    private String lastName;
 
     @JsonFormat(pattern = "MM/dd/yyyy")
-    Date birthDay;
+    private Date birthDay;
 
-    Position position;
+    private Position position;
 
     public User() {
         //Default constructor for Spring

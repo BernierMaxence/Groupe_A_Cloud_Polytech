@@ -9,10 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-
+import java.net.URISyntaxException;
+import java.time.Period;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 public class UserController {
@@ -23,16 +26,25 @@ public class UserController {
     /* Get Mapping */
 
     @GetMapping(path="/user")
-    public ResponseEntity<List<User>> getAllUsers(@RequestParam(value = "page", required = false) Integer page) {
+    public ResponseEntity<?> getAllUsers(
+            @RequestParam(value = "page", required = false) Integer page,
+            @RequestParam(value = "gt", required = false) Integer gt) {
         page = page == null ? 0 : page;
-        List<User> users = userRepository.findAll(new Sort(Sort.Direction.ASC, "id"))
-                .stream()
-                .skip(100*page)
-                .limit(100)
-                .collect(Collectors.toList());
+
+        Stream<User> userStream = userRepository.findAll(new Sort(Sort.Direction.ASC, "id")).stream();
+        if(gt != null) {
+
+            Date now = new Date();
+            System.out.println((now.getTime() - userRepository.findAll(new Sort(Sort.Direction.ASC, "id")).get(0).getBirthDay().getTime())/1000/60/60/24/365);
+            userStream = userStream.filter(user -> (now.getTime()-user.getBirthDay().getTime())/1000/60/60/24/365 > gt);
+        }
 
 
-        System.out.println("is empty : "+users.isEmpty());
+
+        userStream = userStream.skip(100*page).limit(100);
+
+        List<User> users = userStream.collect(Collectors.toList());
+
         return users.isEmpty()
                 ? ResponseEntity.noContent().build()
                 : new ResponseEntity<>(users, HttpStatus.OK);
