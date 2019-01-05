@@ -10,12 +10,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultHandler;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -26,6 +28,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Sort;
 
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -35,8 +38,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -54,7 +56,7 @@ public class PolytechCloudApplicationTests {
 
 
     @Before
-    public void setup() {
+    public void setup() throws Exception {
         // Init mocked elements
         MockitoAnnotations.initMocks(this);
 
@@ -73,7 +75,7 @@ public class PolytechCloudApplicationTests {
                 .thenReturn(new ArrayList<>());
 
         mockMvc.perform(get("/user").characterEncoding("utf-8"))
-				.andExpect(status().isNoContent());
+				.andExpect(status().isOk());
 
 		verify(userRepository).findAll(new Sort(Sort.Direction.ASC, "id"));
 	}
@@ -102,7 +104,7 @@ public class PolytechCloudApplicationTests {
 
         when(userRepository.findAll(new Sort(Sort.Direction.ASC, "id"))).thenReturn(users);
 
-        mockMvc.perform(get("/user?id=1").characterEncoding("utf-8"))
+        mockMvc.perform(get("/user").characterEncoding("utf-8"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.*", hasSize(100)));
         verify(userRepository).findAll(new Sort(Sort.Direction.ASC, "id"));
@@ -284,9 +286,11 @@ public class PolytechCloudApplicationTests {
         when(userRepository.findById("2")).thenReturn(Optional.empty());
 
         mockMvc.perform(delete("/user/{id}", "2"))
-                .andExpect(status().isNotFound());
+                .andExpect(status().is(500));
 
         verify(userRepository).findById("2");
     }
+
+
 
 }
