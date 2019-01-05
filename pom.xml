@@ -40,14 +40,12 @@
 			<artifactId>de.flapdoodle.embed.mongo</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-			<version>RELEASE</version>
-		</dependency>
-
-
-		<dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+        <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-rest</artifactId>
 		</dependency>
@@ -56,8 +54,6 @@
 			<artifactId>persistence-api</artifactId>
 			<version>1.0.2</version>
 		</dependency>
-
-
 	</dependencies>
 
 	<distributionManagement>
