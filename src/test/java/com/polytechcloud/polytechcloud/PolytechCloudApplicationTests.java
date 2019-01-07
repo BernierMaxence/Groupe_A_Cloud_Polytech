@@ -24,7 +24,10 @@ import org.springframework.test.web.servlet.ResultHandler;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Sort;
@@ -168,6 +171,31 @@ public class PolytechCloudApplicationTests {
         }
 
         verify(userRepository, Mockito.times(2)).findAll(new Sort(Sort.Direction.ASC, "id"));
+    }
+
+    // ---------- GET /user?gt= -> contrôle le fonctionnement du filtre âge ----------
+
+    @Test
+    public void testGetAllUsers_NoError_gt() throws Exception {
+        ArrayList<User> users = new ArrayList<>();
+        SimpleDateFormat sdf =new SimpleDateFormat("dd/MM/yyyy");
+        User userOne = new User();
+        userOne.setFirstName("adam");
+        userOne.setBirthDay(sdf.parse("01/01/2000"));
+        User userTwo = new User();
+        userTwo.setFirstName("eve");
+        userTwo.setBirthDay(sdf.parse("01/01/1950"));
+
+        users.add(userOne);
+        users.add(userTwo);
+
+
+        when(userRepository.findAll(new Sort(Sort.Direction.ASC, "id"))).thenReturn(users);
+
+        mockMvc.perform(get("/user?gt=20").characterEncoding("utf-8"))
+                .andExpect(jsonPath("$.*", hasSize(1)));;
+
+        verify(userRepository).findAll(new Sort(Sort.Direction.ASC, "id"));
     }
 
     // ----------------------------------------------------------------------------
