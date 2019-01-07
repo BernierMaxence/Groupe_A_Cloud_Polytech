@@ -23,7 +23,7 @@ public class UserController {
     /* Get Mapping */
 
     @GetMapping(path="/user")
-    public ResponseEntity<?> getAllUsers(
+    public ResponseEntity<List<User>> getAllUsers(
             @RequestParam(value = "page", required = false) Integer page,
             @RequestParam(value = "gt", required = false) Integer gt) {
         page = page == null ? 0 : page;
@@ -32,7 +32,6 @@ public class UserController {
         if(gt != null) {
 
             Date now = new Date();
-            System.out.println((now.getTime() - userRepository.findAll(new Sort(Sort.Direction.ASC, "id")).get(0).getBirthDay().getTime())/1000/60/60/24/365);
             userStream = userStream.filter(user -> (now.getTime()-user.getBirthDay().getTime())/1000/60/60/24/365 > gt);
         }
 
@@ -72,33 +71,25 @@ public class UserController {
 
     @PutMapping(path = "/user/{id}")
     public ResponseEntity<Optional<User>> addOneUser(@PathVariable String id, @RequestBody User newUser) {
-        if(newUser== null) {
-            return ResponseEntity.badRequest().build();
-        } else {
 
+        Optional<User> user = userRepository.findById(id);
 
-            Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
 
-            if (user.isPresent()) {
+            user.get().update(newUser);
+            userRepository.save(user.get());
+            return new ResponseEntity<>(user, HttpStatus.OK);
 
-                user.get().update(newUser);
-                userRepository.save(user.get());
-                return new ResponseEntity<>(user, HttpStatus.OK);
-
-            }
-
-            return ResponseEntity.notFound().build();
         }
+
+        return ResponseEntity.notFound().build();
+
     }
 
     /* Post Mapping */
 
     @PostMapping(path = "/user")
     public ResponseEntity<User> addNewUser(@RequestBody User user) {
-
-        if (user == null)
-            return ResponseEntity.badRequest().build();
-
         userRepository.save(user);
 
         return new ResponseEntity<>(user, HttpStatus.CREATED);

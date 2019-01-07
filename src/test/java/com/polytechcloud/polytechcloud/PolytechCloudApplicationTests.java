@@ -170,6 +170,37 @@ public class PolytechCloudApplicationTests {
         verify(userRepository, Mockito.times(2)).findAll(new Sort(Sort.Direction.ASC, "id"));
     }
 
+    // ---------- GET /user?page= -> deux pages différentes ne peuvent pas contenir le même utilisateur ----------
+
+    /*@Test
+    public void testGetAllUsers_NoError_gt) throws Exception {
+        ArrayList<User> users = new ArrayList<>();
+        for (int i = 0; i<200; i++) {
+            User user = new User();
+            user.setId(Integer.toString(i));
+            users.add(user);
+        }
+
+        when(userRepository.findAll(new Sort(Sort.Direction.ASC, "id"))).thenReturn(users);
+
+        MvcResult page0 = mockMvc.perform(get("/user?page=0").characterEncoding("utf-8")).andReturn();
+        MvcResult page1 = mockMvc.perform(get("/user?page=1").characterEncoding("utf-8")).andReturn();
+
+        JSONArray page0Users = new JSONArray(page0.getResponse().getContentAsString());
+        JSONArray page1Users = new JSONArray(page1.getResponse().getContentAsString());
+        for(int i=0; i<page0Users.length(); i++)
+        {
+            JSONObject page0User = page0Users.getJSONObject(i);
+            for(int j=0; j<page1Users.length(); j++)
+            {
+                JSONObject page1User = page1Users.getJSONObject(j);
+                assertNotEquals(page0User.getString("id"), page1User.getString("id"));
+            }
+        }
+
+        verify(userRepository, Mockito.times(2)).findAll(new Sort(Sort.Direction.ASC, "id"));
+    }*/
+
     // ----------------------------------------------------------------------------
 
     // ---------- GET /user/{id} -> retourne l'utilisateur correspondant ----------
