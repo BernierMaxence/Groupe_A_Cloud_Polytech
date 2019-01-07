@@ -38,7 +38,7 @@ public class UserController {
 
 
 
-        userStream = userStream.skip(100*page).limit(100);
+        userStream = userStream.skip(100L*page).limit(100);
 
         List<User> users = userStream.collect(Collectors.toList());
 
