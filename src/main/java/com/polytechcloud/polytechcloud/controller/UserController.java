@@ -35,16 +35,11 @@ public class UserController {
             userStream = userStream.filter(user -> (now.getTime()-user.getBirthDay().getTime())/1000/60/60/24/365 > gt);
         }
 
-
-
         userStream = userStream.skip(100L*page).limit(100);
 
         List<User> users = userStream.collect(Collectors.toList());
 
         return new ResponseEntity<>(users, HttpStatus.OK);
-        /*return users.isEmpty()
-                ? ResponseEntity.noContent().build()
-                : new ResponseEntity<>(users, HttpStatus.OK);*/
     }
 
     @GetMapping(path = "user/{id}")
